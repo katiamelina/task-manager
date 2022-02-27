@@ -24,11 +24,15 @@ public class GUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        //Contain all the button
         jPanel1 = new javax.swing.JPanel();
+        //Tasks button
         jButton1 = new javax.swing.JButton();
+        //Categorize Tasks
         jButton2 = new javax.swing.JButton();
+        //Add Task
         jButton3 = new javax.swing.JButton();
+        //Edit Task
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -46,6 +50,8 @@ public class GUI extends javax.swing.JFrame {
         jButton3.setText("Add Task");
 
         jButton4.setText("Edit Task");
+
+        
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
