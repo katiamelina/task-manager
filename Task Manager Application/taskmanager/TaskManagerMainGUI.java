@@ -4,11 +4,24 @@
  */
 package taskmanager;
 
+// import java.awt.Color;
+// import java.awt.BorderLayout;
+// import javax.swing.JFrame;
+// import java.awt.Component;
+// import javax.swing.*;
+import java.awt.event.*;
+
 /**
  *
  * @author 16825
  */
 public class TaskManagerMainGUI extends javax.swing.JFrame {
+
+     // Variables declaration - do not modify//GEN-BEGIN:variables
+     private javax.swing.JButton AddTaskButton;
+     private javax.swing.JButton EditTaskButton;
+     private javax.swing.JButton categorizationButton;
+     // End of variables declaration//GEN-END:variables
 
     /**
      * Creates new form TaskManagerMainGUI
@@ -62,8 +75,26 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        addListener();
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    /*
+        AddListener will add new functions/frame that associate with the button.
+        For every button we will listener down here.
+    */
+    // ADD LISTENER FOR MAIN BUTTON FOR ADD TASK.
+    public void addListener(){
+        AddTaskButton.addMouseListener(new MouseAdapter(){
+            @override
+            public void mousePressed(MouseEvent e) {
+                new AddTask().setVisible(true);
+                revalidate();
+            }
+
+        });
+    }
+
 
     /**
      * @param args the command line arguments
@@ -96,13 +127,11 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TaskManagerMainGUI().setVisible(true);
+                
+                // new AddTask().setVisible(true);
             }
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddTaskButton;
-    private javax.swing.JButton EditTaskButton;
-    private javax.swing.JButton categorizationButton;
-    // End of variables declaration//GEN-END:variables
+   
 }
