@@ -8,7 +8,7 @@ package taskmanager;
 // import java.awt.BorderLayout;
 // import javax.swing.JFrame;
 // import java.awt.Component;
-// import javax.swing.*;
+import javax.swing.*;
 import java.awt.event.*;
 
 /**
@@ -16,11 +16,13 @@ import java.awt.event.*;
  * @author 16825
  */
 public class TaskManagerMainGUI extends javax.swing.JFrame {
-
+    
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.JButton AddTaskButton;
      private javax.swing.JButton EditTaskButton;
      private javax.swing.JButton categorizationButton;
+     private javax.swing.JScrollPane taskPanel;
+
      // End of variables declaration//GEN-END:variables
 
     /**
@@ -42,14 +44,18 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         AddTaskButton = new javax.swing.JButton();
         EditTaskButton = new javax.swing.JButton();
         categorizationButton = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        // mainPanel = new JPanel();
+        taskPanel = new javax.swing.JScrollPane();
 
         AddTaskButton.setText("Add Task");
-
         EditTaskButton.setText("Edit Task");
-
         categorizationButton.setText("Categorize Tasks");
+
+
+        //Configuration for internal frame.
+        taskPanel.setVisible(true);
+
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,19 +67,27 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
                     .addComponent(AddTaskButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(EditTaskButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(categorizationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(taskPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(578, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
+            .addComponent(taskPanel)
+            .addGroup(layout.createSequentialGroup()
+            // .addContainerGap()
                 .addComponent(AddTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(EditTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(categorizationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                .addGap(0,383,Short.MAX_VALUE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        )));
 
         addListener();
         pack();
@@ -88,12 +102,14 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         AddTaskButton.addMouseListener(new MouseAdapter(){
             @override
             public void mousePressed(MouseEvent e) {
-                new AddTask().setVisible(true);
+                new AddTaskGUI().setVisible(true);
                 revalidate();
             }
-
         });
     }
+
+
+
 
 
     /**
@@ -127,8 +143,6 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TaskManagerMainGUI().setVisible(true);
-                
-                // new AddTask().setVisible(true);
             }
         });
     }
