@@ -24,5 +24,20 @@ public class TaskManager {
             listOfTasks.remove(listOfTasks.indexOf(t));
         }
     }
+
+    //if the returned task has a priority of -1, it was not found
+    public Task getTaskbyTitle(String t){
+        Task output = new Task(-1, null, new Date(0), new Date(0));
+        for (Task task : listOfTasks) {
+            if (task.getTitle() == t) {
+                output.setTitle(task.getTitle());
+                output.setPriority(task.getPriority());
+                output.setStartDate(task.getStartDate());
+                output.setEndDate(task.getEndDate());
+                return output;
+            }
+        }
+        return output;
+    }
     
 }//end of class
