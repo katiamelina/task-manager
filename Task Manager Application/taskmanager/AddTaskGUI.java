@@ -4,22 +4,30 @@
  */
 package taskmanager;
 
-
+import java.lang.String;
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.*;
 
-import javax.swing.SwingUtilities;
+import taskmanager.Task;
+import taskmanager.TaskList;
+import java.time.format.DateTimeParseException;
+
 
 
 /**
  *
  * @author 16825
  */
-public class AddTask extends javax.swing.JFrame {
+public class AddTaskGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form AddTask
      */
-    public AddTask() {
+    public AddTaskGUI() {
         initComponents();
     }
 
@@ -36,11 +44,13 @@ public class AddTask extends javax.swing.JFrame {
         taskNameLabel = new javax.swing.JLabel();
         priorityLabel = new javax.swing.JLabel();
         dueDateLabel = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
+        taskNameInput = new javax.swing.JTextField();
+        priorityInput = new javax.swing.JComboBox<>();
+        dueDateInput = new javax.swing.JTextField();
         accept = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
+
+        taskGUI = new TaskListGUI();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Task Menu");
@@ -57,15 +67,15 @@ public class AddTask extends javax.swing.JFrame {
         dueDateLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dueDateLabel.setText("Complete By: ");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        taskNameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "High", "Medium", "Low" }));
+        priorityInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "High", "Medium", "Low" }));
 
-        jTextField2.setText("XX/XX/XXXX");
+        dueDateInput.setText("MM-dd-yyyy");
 
         accept.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         accept.setIcon(new javax.swing.ImageIcon(getClass().getResource("/todo/Add.png"))); // NOI18N
@@ -92,9 +102,9 @@ public class AddTask extends javax.swing.JFrame {
                                     .addComponent(taskNameLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)))))
+                                    .addComponent(taskNameInput)
+                                    .addComponent(priorityInput, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(dueDateInput)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(209, 209, 209)
                         .addComponent(accept)
@@ -110,15 +120,15 @@ public class AddTask extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(taskNameLabel)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(taskNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(priorityLabel)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(priorityInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dueDateLabel)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dueDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(accept)
@@ -139,7 +149,35 @@ public class AddTask extends javax.swing.JFrame {
         accept.addMouseListener(new MouseAdapter(){
             @override
             public void mousePressed(MouseEvent e) {
-                // Add back-end implementation here.
+                //get priority
+                Hashtable <String,Integer> ht = new Hashtable<String,Integer>(); 
+                ht.put("High",1);
+                ht.put("Medium",2);
+                ht.put("Low",3);
+
+                //Get input
+                String getTaskNameInput = taskNameInput.getText();
+                String getPriorityInput = priorityInput.getSelectedItem().toString(); 
+
+                //get currentDate
+                LocalDate currentDate = LocalDate.now();
+
+                //get deadline 
+                String getDueDateInput = dueDateInput.getText();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                LocalDate dueDate = LocalDate.now();
+                try{
+                    dueDate = LocalDate.parse(getDueDateInput,formatter);
+                }
+                catch(DateTimeParseException err){
+                    //To do, create a error box that warns incorrect date type.
+                    System.out.println(err.getMessage());
+                }
+
+                //add new task to task list
+                Task newTask = new Task(ht.get(getPriorityInput),getTaskNameInput,currentDate,dueDate);
+                taskGUI.addTaskToGUI(newTask);
+
                 dispose();
                 revalidate();
             }
@@ -153,8 +191,6 @@ public class AddTask extends javax.swing.JFrame {
                 dispose();
             }
         });
-
-
     }
 
 
@@ -181,20 +217,20 @@ public class AddTask extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddTaskGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddTaskGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddTaskGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddTaskGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddTask().setVisible(true);
+                new AddTaskGUI().setVisible(true);
             }
         });
     }
@@ -204,10 +240,13 @@ public class AddTask extends javax.swing.JFrame {
     private javax.swing.JLabel dueDateLabel;
     private javax.swing.JButton accept;
     private javax.swing.JButton cancel;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JComboBox<String> priorityInput;
+    private javax.swing.JTextField taskNameInput;
+    private javax.swing.JTextField dueDateInput;
     private javax.swing.JLabel priorityLabel;
     private javax.swing.JLabel taskNameLabel;
+
+    public TaskListGUI taskGUI;
+
     // End of variables declaration//GEN-END:variables
 }
