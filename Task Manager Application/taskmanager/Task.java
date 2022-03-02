@@ -1,7 +1,10 @@
 package taskmanager;
 
+import java.awt.*;
+import javax.swing.*;
 import java.lang.String;
 import java.time.LocalDate;
+
 
 public class Task {
 
@@ -10,6 +13,7 @@ public class Task {
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
+    
     
     //constructor with all parameters
     public Task(int priorityParam, String titleParam, LocalDate begin, LocalDate end) {
@@ -46,5 +50,6 @@ public class Task {
     protected LocalDate getEndDate(){
         return endDate;
     }
+
     
 }//end of class

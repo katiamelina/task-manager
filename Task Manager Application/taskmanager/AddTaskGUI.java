@@ -12,8 +12,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.*;
 
+import javax.swing.JButton;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import taskmanager.Task;
-import taskmanager.TaskList;
 import java.time.format.DateTimeParseException;
 
 
@@ -50,7 +55,10 @@ public class AddTaskGUI extends javax.swing.JFrame {
         accept = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
 
-        taskGUI = new TaskListGUI();
+        
+        taskPanel = new JPanel();
+        // newTaskList = new Vector<Task>();
+        // taskGUI = new TaskListGUI();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Task Menu");
@@ -136,7 +144,7 @@ public class AddTaskGUI extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        addListener();
+        // addListener();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -166,18 +174,28 @@ public class AddTaskGUI extends javax.swing.JFrame {
                 String getDueDateInput = dueDateInput.getText();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
                 LocalDate dueDate = LocalDate.now();
-                try{
-                    dueDate = LocalDate.parse(getDueDateInput,formatter);
-                }
-                catch(DateTimeParseException err){
-                    //To do, create a error box that warns incorrect date type.
-                    System.out.println(err.getMessage());
-                }
-
+                dueDate = LocalDate.parse(getDueDateInput,formatter);
                 //add new task to task list
                 Task newTask = new Task(ht.get(getPriorityInput),getTaskNameInput,currentDate,dueDate);
-                taskGUI.addTaskToGUI(newTask);
 
+                //create panel to store task gui
+                taskPanel.setPreferredSize(new Dimension(40,200));
+                taskPanel.setBackground(Color.white);
+                taskPanel.setLayout(new BorderLayout());
+
+                GridLayout layoutGrid = new GridLayout(10,1);
+                layoutGrid.setVgap(5);
+                TaskManagerMainGUI.testPanel.setLayout(layoutGrid);
+
+                testTextField = new javax.swing.JTextField(newTask.getTitle());
+                testTextField.setBorder(BorderFactory.createEmptyBorder());
+                testTextField.setBackground(Color.white);
+
+                //todo: Figure out how to add task to the list
+                TaskManagerMainGUI.testPanel.add(taskPanel.add(testTextField),BorderLayout.CENTER);
+                
+
+            
                 dispose();
                 revalidate();
             }
@@ -193,11 +211,20 @@ public class AddTaskGUI extends javax.swing.JFrame {
         });
     }
 
+    public void setTemp(Task temp){
+        this.temp = temp;
+    }
+    public Task getTemp(){
+        return temp;
+    }
+
+
 
 
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
@@ -246,7 +273,11 @@ public class AddTaskGUI extends javax.swing.JFrame {
     private javax.swing.JLabel priorityLabel;
     private javax.swing.JLabel taskNameLabel;
 
-    public TaskListGUI taskGUI;
+    private Task temp;
+
+    public javax.swing.JTextField testTextField;
+    public JPanel taskPanel;
+    public GridLayout layoutGrid;
 
     // End of variables declaration//GEN-END:variables
 }

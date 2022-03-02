@@ -10,6 +10,9 @@ package taskmanager;
 // import java.awt.Component;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.util.Vector;
+
 
 /**
  *
@@ -21,8 +24,17 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
      private javax.swing.JButton AddTaskButton;
      private javax.swing.JButton EditTaskButton;
      private javax.swing.JButton categorizationButton;
-     private javax.swing.JScrollPane taskPanel;
+     
 
+     public  static javax.swing.JScrollPane mainPanel;
+     static DefaultListModel<String> model;
+     JList<String> list;
+    
+     public static JPanel testPanel;
+     static Boolean flag = false;
+     public TaskList currentTask;
+    
+     
      // End of variables declaration//GEN-END:variables
 
     /**
@@ -44,19 +56,25 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         AddTaskButton = new javax.swing.JButton();
         EditTaskButton = new javax.swing.JButton();
         categorizationButton = new javax.swing.JButton();
-        // mainPanel = new JPanel();
-        taskPanel = new javax.swing.JScrollPane();
+     
 
         AddTaskButton.setText("Add Task");
         EditTaskButton.setText("Edit Task");
         categorizationButton.setText("Categorize Tasks");
 
+        //intialize task list
+        currentTask = new TaskList();
 
-        //Configuration for internal frame.
-        taskPanel.setVisible(true);
-
+        //initalize model
+        model = new DefaultListModel<>();
+        list = new JList<>(model);
+    
+        //Configuration for main frame.
+        mainPanel = new javax.swing.JScrollPane();
+        mainPanel.setVisible(true);
+        testPanel = new JPanel();
         
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -68,7 +86,7 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
                     .addComponent(EditTaskButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(categorizationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(taskPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(testPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(578, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -77,7 +95,7 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 
-            .addComponent(taskPanel)
+            .addComponent(testPanel)
             .addGroup(layout.createSequentialGroup()
             // .addContainerGap()
                 .addComponent(AddTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -93,6 +111,13 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+   
+
+    public void AddTaskToGUI(){
+    
+       
+    }
+
     /*
         AddListener will add new functions/frame that associate with the button.
         For every button we will listener down here.
@@ -102,11 +127,16 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         AddTaskButton.addMouseListener(new MouseAdapter(){
             @override
             public void mousePressed(MouseEvent e) {
-                new AddTaskGUI().setVisible(true);
-                revalidate();
+                AddTaskGUI addbox = new AddTaskGUI();
+                addbox.setVisible(true);
+                addbox.addListener();
+                
+
+                // System.out.println(addbox.getTemp().getTitle());
             }
         });
     }
+    
 
 
 
@@ -143,6 +173,7 @@ public class TaskManagerMainGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TaskManagerMainGUI().setVisible(true);
+                // System.out.println(addbox.getTemp().getTitle());
             }
         });
     }
